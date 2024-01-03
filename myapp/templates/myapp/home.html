@@ -1,0 +1,29 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Home - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <h1>Welcome to My Bookstore!</h1>
+    <p>
+        Explore our vast collection of books. Whether you're into fiction, non-fiction, or academic works,
+        you're sure to find something that captivates your interest.
+    </p>
+    
+    <h2>Featured Books</h2>
+    <div class="row">
+        {% for book in featured_books %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">Authors: {{ book.authors.all|join:", " }}</p>
+                        <p class="card-text">Published on: {{ book.publication_date }}</p>
+                        <!-- Add more book details as needed -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Add more home page content as needed -->
+{% endblock %}
