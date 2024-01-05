@@ -1,0 +1,58 @@
+<!-- fish_library/templates/fish_library/fish_detail.html -->
+{% extends 'fish_library/base.html' %}
+
+{% block title %}{{ fish.species }} - Fish Detail{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">{{ fish.species }}</h1>
+                <p class="card-text"><strong>Color:</strong> {{ fish.color }}</p>
+                <p class="card-text"><strong>Size:</strong> {{ fish.size }}</p>
+
+                <!-- Display Categories -->
+                <p class="card-text"><strong>Categories:</strong>
+                    {% if fish.category %}
+                        {{ fish.category.name }}
+                    {% else %}
+                        No category for this fish.
+                    {% endif %}
+                </p>
+
+                <!-- Display Ponds -->
+                <p class="card-text"><strong>Ponds:</strong>
+                    {% if fish.ponds.all %}
+                        {% for pond in fish.ponds.all %}
+                            {{ pond.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No ponds for this fish.
+                    {% endif %}
+                </p>
+
+                <!-- Display Fishermen -->
+                <p class="card-text"><strong>Fishermen:</strong>
+                    {% if fish.fans.all %}
+                        {% for fisherman in fish.fans.all %}
+                            {{ fisherman.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No fishermen for this fish.
+                    {% endif %}
+                </p>
+
+                <!-- Display Fishing Records -->
+                <p class="card-text"><strong>Fishing Records:</strong>
+                    {% if fish.fishing_records.all %}
+                        {% for record in fish.fishing_records.all %}
+                            {{ record.fisherman.name }} caught {{ fish.species }} on {{ record.date }} at {{ record.time }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No fishing records for this fish.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

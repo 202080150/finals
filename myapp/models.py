@@ -1,49 +1,53 @@
 from django.db import models
+from django.utils.crypto import get_random_string
+from faker import Faker
+from datetime import date, datetime
 
-# Create your models here.
+fake = Faker()
+
 class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
 
-class Author(BaseModel):
-    name = models.CharField(max_length=100, null=True, blank=True)
-    birthdate = models.DateField(null=True, blank=True)
-    nationality = models.CharField(max_length=100, null=True, blank=True)
+class Category(BaseModel):
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
-class Genre(BaseModel):
-    name = models.CharField(max_length=100, null=True, blank=True)
+class Pond(BaseModel):
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
-class Book(BaseModel):
-    GENRE_CHOICES = (
-        ('Fiction', 'Fiction'),
-        ('Classics', 'Classics'),
-        ('Dystopian', 'Dystopian'),
-        ('Romance', 'Romance'),
-        ('Fantasy', 'Fantasy'),
-        # Add more genres as needed
-    )
-
-    title = models.CharField(max_length=100, null=True, blank=True)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True)
-    genre = models.CharField(max_length=100, choices=GENRE_CHOICES, null=True, blank=True)
-    publication_date = models.DateField(null=True, blank=True)
-    summary = models.CharField(max_length=250, null=True, blank=True)
+class Fish(BaseModel):
+    species = models.CharField(max_length=255)
+    color = models.CharField(max_length=255)
+    size = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='fishes')
+    ponds = models.ManyToManyField(Pond, related_name='fishes')
 
     def __str__(self):
-        return self.title
+        return self.species
 
-class BookGenre(BaseModel):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=True)
-    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True, blank=True)
+class Fisherman(BaseModel):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    favorite_fish = models.ForeignKey(Fish, on_delete=models.CASCADE, related_name='fans')
 
     def __str__(self):
-        return f"{self.book.title} - {self.genre.name}"
+        return self.name
+
+class FishingRecord(BaseModel):
+    date = models.DateField()
+    time = models.DateTimeField()
+    fish = models.ForeignKey(Fish, on_delete=models.CASCADE, related_name='fishing_records')
+    fisherman = models.ForeignKey(Fisherman, on_delete=models.CASCADE, related_name='fishing_records')
+
+    def __str__(self):
+        return f"{self.fisherman.name} caught {self.fish.species} on {self.date} at {self.time}"

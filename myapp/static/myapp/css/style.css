@@ -1,0 +1,37 @@
+body {
+    background-image: url('/static/images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.navbar {
+    background-color: #4CAF50; /* Green color, you can change this to your preferred color */
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+.footer {
+    background-color: #4CAF50; /* Green color, you can change this to your preferred color */
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px; /* Add margin-top for better spacing */
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Add more styles or modify existing ones as needed */
